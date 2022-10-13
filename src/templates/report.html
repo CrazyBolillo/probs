@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>Probabilidades</title>
+</head>
+<body>
+<h1>Calculadora de Probabilidades</h1>
+<div>
+    <h2>Proveedores de Internet</h2>
+    <ul id="providers">
+        {% for provider in providers %}
+            <li>
+                <h3>{{ provider.name }}</h3>
+                <ul>
+                    <li>Fiabilidad: {{ provider.uptime }}%</li>
+                    <li>Velocidad: {{ provider.megabits }} mbps</li>
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+</body>
+</html>

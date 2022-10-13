@@ -1,0 +1,14 @@
+{
+  "providers": [
+    {
+      "name": "Telmex",
+      "uptime": 95,
+      "megabits": 50
+    },
+    {
+      "name": "Megacable",
+      "uptime": 90,
+      "megabits": 60
+    }
+  ]
+}
