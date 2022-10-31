@@ -39,24 +39,36 @@
 </head>
 <body>
 <h1>Calculadora de Probabilidades</h1>
-<h2>Días simulados: {{ simulation.days }}</h2>
+<h2>Días simulados: 365</h2>
 <h2>Proveedores de Internet</h2>
 <div class="flex">
-    {% for provider, values in providers.items() %}
+    
     <div class="flex col hc provider">
-        <h3>{{ provider }}</h3>
+        <h3>Telmex</h3>
         <div>
             <ul>
-                <li>Fiabilidad: {{ values.uptime }}%</li>
-                <li>Velocidad: {{ values.megabits }} mbps</li>
-                <li>Fallas esperadas: {{ values.predicted_downs }}</li>
-                <li>Fallas en periodo: {{ simulation.days - uptime[provider].count(0) }}</li>
+                <li>Fiabilidad: 97%</li>
+                <li>Velocidad: 50 mbps</li>
+                <li>Fallas esperadas: 11</li>
+                <li>Fallas en periodo: 8</li>
             </ul>
         </div>
     </div>
-{% endfor %}
+
+    <div class="flex col hc provider">
+        <h3>Megacable</h3>
+        <div>
+            <ul>
+                <li>Fiabilidad: 95%</li>
+                <li>Velocidad: 100 mbps</li>
+                <li>Fallas esperadas: 19</li>
+                <li>Fallas en periodo: 26</li>
+            </ul>
+        </div>
+    </div>
+
 </div>
-<h3>Fallas Simultaneas (sin internet por completo): {{ downtime }}</h3>
+<h3>Fallas Simultaneas (sin internet por completo): 1</h3>
 <div class="flex">
     <img src="fails.png"/>
     <img src="bandwidth.png"/>

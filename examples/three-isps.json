@@ -1,12 +1,16 @@
 {
   "providers": {
     "Telmex": {
-      "uptime": 97,
+      "uptime": 99,
       "megabits": 50
     },
-    "Megacable": {
-      "uptime": 95,
+    "Kangaroo": {
+      "uptime": 97,
       "megabits": 100
+    },
+    "Infinitum": {
+      "uptime": 95,
+      "megabits": 2
     }
   },
   "simulation": {
