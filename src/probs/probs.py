@@ -8,6 +8,7 @@ import pathlib
 import matplotlib.pyplot as plt
 import numpy as np
 
+from statistics import mean
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 
@@ -36,10 +37,13 @@ def main():
         plt.scatter(days_array, np.array(prov_uptime[provider]), label=provider)
         prov_color += 1
 
-    predicted_downtime = 0
-    prov_info = config["providers"].items()
-
-
+    prov_info = list(config["providers"].values())
+    max_bandwidth = prov_info[0]["megabits"]
+    predicted_downtime = (100 - prov_info[0]["uptime"]) / 100
+    for provider in prov_info[1:]:
+        max_bandwidth += provider["megabits"]
+        predicted_downtime *= (100 - provider["uptime"]) / 100
+    predicted_downtime = round(config["simulation"]["days"] * predicted_downtime, 2)
 
     downtime = 0
     prov_bandwidth = []
@@ -66,7 +70,15 @@ def main():
     pathlib.Path(output_dir).mkdir(parents=True, exist_ok=True)
 
     with open((os.path.join(output_dir, 'probs.html')), 'w') as fl:
-        fl.write(template.render(**config, uptime=prov_uptime, downtime=downtime))
+        fl.write(template.render(
+            **config,
+            uptime=prov_uptime,
+            downtime=downtime,
+            predicted_downtime=predicted_downtime,
+            round_predicted_downtime=round(predicted_downtime),
+            max_bandwidth=max_bandwidth,
+            mean_bandwidth=round(mean(prov_bandwidth), 2)
+        ))
 
     plt.xlabel("Días")
     plt.tick_params(axis="y", which="both", left=False, labelleft=False)
@@ -75,20 +87,22 @@ def main():
     plt.ylabel("Fallas")
     plt.legend()
     plt.grid(True)
+    plt.title("Fallas de los proveedores")
     plt.savefig(os.path.join(output_dir, "fails.png"))
 
-    bw_options = np.array(list(set(prov_bandwidth)))
+    bw_options = list(set(prov_bandwidth))
     bw_count = []
     for opt in bw_options:
         bw_count.append(prov_bandwidth.count(opt))
-    bw_count = np.array(bw_count)
 
     plt.clf()
-    k = plt.bar(bw_options, bw_count, align="center", width=5)
-    plt.xticks(bw_options)
-    plt.xlabel("Ancho de banda (mpbs)")
-    plt.ylabel("Días")
-    plt.bar_label(k)
+    plt.pie(
+        bw_count,
+        labels=[str(bw) + " mbps" for bw in bw_options],
+        autopct=lambda pct: "%d" % np.round(pct / 100 * config["simulation"]["days"], 0),
+        explode=[0.5 for _i in range(len(bw_options))]
+    )
+    plt.title("Ancho de banda (mpbs) y días")
     plt.savefig(os.path.join(output_dir, "bandwidth.png"))
 
 

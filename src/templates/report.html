@@ -19,6 +19,7 @@
             max-width: 1280px;
         }
         h1, h2, h3, h4, h5, h6 {
+            margin-top: 5px;
             margin-bottom: 0;
         }
         .flex {
@@ -56,7 +57,11 @@
     </div>
 {% endfor %}
 </div>
-<h3>Fallas Simultaneas (sin internet por completo): {{ downtime }}</h3>
+<h3>Ancho de Banda Promedio: {{ mean_bandwidth }} mbps</h3>
+<h3>Ancho de Banda Máximo (Posible): {{ max_bandwidth }} mbps</h3>
+<h3>Fallas simultaneas (sin internet por completo):</h3>
+<h4>Predicción: {{ predicted_downtime }} (redondeado: {{ round_predicted_downtime }})</h4>
+<h4>Realidad: {{ downtime }}</h4>
 <div class="flex">
     <img src="fails.png"/>
     <img src="bandwidth.png"/>
